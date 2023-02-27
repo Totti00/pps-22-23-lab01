@@ -10,6 +10,9 @@ class SimpleBankAccountWithAtmTest {
 
     public static final int INITIAL_DEPOSIT = 500;
     public static final int NUMBER_OF_ATTEMPS = 100;
+    public static final int MONEY_TO_WITHDRAW = 2;
+    public static final int INITIAL_DEPOSIT_WITH_FEE = 499;
+    public static final int USER_ID_NOT_EXIST = 2;
     private AccountHolder accountHolder;
     private BankAccount bankAccount;
 
@@ -17,6 +20,10 @@ class SimpleBankAccountWithAtmTest {
     void setUp() {
         accountHolder = new AccountHolder("Mario", "Rossi", 1);
         bankAccount = new SimpleBankAccountWithAtm(accountHolder, 0);
+    }
+
+    private void initializeBalance() {
+        bankAccount.deposit(accountHolder.getId(), INITIAL_DEPOSIT);
     }
 
     @Test
@@ -27,66 +34,55 @@ class SimpleBankAccountWithAtmTest {
     @Test
     void testDeposit() {
         initializeBalance();
-        int initialDepositWithFee = 499;
-        assertEquals(initialDepositWithFee, bankAccount.getBalance());
+        assertEquals(INITIAL_DEPOSIT_WITH_FEE, bankAccount.getBalance());
     }
 
     @Test
     void testCheckBalanceAfterMultipleDeposit() {
-        int moneyAdded = 2;
         for (int i = 0; i < NUMBER_OF_ATTEMPS; i++) {
-            bankAccount.deposit(accountHolder.getId(), moneyAdded);
+            bankAccount.deposit(accountHolder.getId(), INITIAL_DEPOSIT);
         }
-        int balanceAfterDeposits = 100;
+        int balanceAfterDeposits = 49900;
         assertEquals(balanceAfterDeposits, bankAccount.getBalance());
+    }
+
+    @Test
+    void testWrongUserDeposit() {
+        assertThrows(IllegalArgumentException.class, () -> bankAccount.deposit(USER_ID_NOT_EXIST, INITIAL_DEPOSIT));
     }
 
     @Test
     void testWithdraw() {
         initializeBalance();
-        int moneyToWithdraw = 50;
-        bankAccount.withdraw(accountHolder.getId(), moneyToWithdraw);
-        int balanceAfterWithdraw = 448;
+        bankAccount.withdraw(accountHolder.getId(), MONEY_TO_WITHDRAW);
+        int balanceAfterWithdraw = 496;
         assertEquals(balanceAfterWithdraw, bankAccount.getBalance());
-    }
-
-    @Test
-    void testCheckBalanceAfterMultipleWithdraw() {
-        initializeBalance();
-        int moneyTaken = 2;
-        for (int i = 0; i < NUMBER_OF_ATTEMPS; i++) {
-            bankAccount.withdraw(accountHolder.getId(), moneyTaken);
-        }
-        int balanceAfterWithdraws = 199;
-        assertEquals(balanceAfterWithdraws, bankAccount.getBalance());
-    }
-
-    private void initializeBalance() {
-        bankAccount.deposit(accountHolder.getId(), INITIAL_DEPOSIT);
-    }
-
-    @Test
-    void testHolder() {
-        assertSame(bankAccount.getHolder(), accountHolder);
-    }
-
-    @Test
-    void testWrongUserDeposit() {
-        assertThrows(IllegalArgumentException.class, () -> bankAccount.deposit(2, INITIAL_DEPOSIT));
     }
 
     @Test
     void testWrongUserWithdraw() {
         initializeBalance();
-        int attemptWithdraw = 5;
-        assertThrows(IllegalArgumentException.class, () -> bankAccount.withdraw(2, attemptWithdraw));
+        assertThrows(IllegalArgumentException.class, () -> bankAccount.withdraw(USER_ID_NOT_EXIST, MONEY_TO_WITHDRAW));
+    }
+
+    @Test
+    void testCheckBalanceAfterMultipleWithdraw() {
+        initializeBalance();
+        for (int i = 0; i < NUMBER_OF_ATTEMPS; i++) {
+            bankAccount.withdraw(accountHolder.getId(), MONEY_TO_WITHDRAW);
+        }
+        int balanceAfterWithdraws = 199;
+        assertEquals(balanceAfterWithdraws, bankAccount.getBalance());
     }
 
     @Test
     void testWrongWithdraw() {
-        initializeBalance();
-        int attemptWrongWithdraw = 500;
-        bankAccount.withdraw(accountHolder.getId(), attemptWrongWithdraw);
-        assertEquals(INITIAL_DEPOSIT - 1, bankAccount.getBalance());
+        bankAccount.withdraw(accountHolder.getId(), MONEY_TO_WITHDRAW);
+        assertEquals(0, bankAccount.getBalance());
+    }
+
+    @Test
+    void testHolder() {
+        assertSame(bankAccount.getHolder(), accountHolder);
     }
 }
