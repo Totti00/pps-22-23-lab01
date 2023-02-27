@@ -17,16 +17,22 @@ public class SimpleBankAccountWithAtm implements BankAccount{
 
     @Override
     public double getBalance() {
-        return 0;
+        return balance;
     }
 
     @Override
     public void deposit(int userID, double amount) {
-
+        if(checkUser(userID)) {
+            balance += --amount;
+        }
     }
 
     @Override
     public void withdraw(int userID, double amount) {
 
+    }
+
+    private boolean checkUser(int userID) {
+        return userID == this.holder.getId();
     }
 }
