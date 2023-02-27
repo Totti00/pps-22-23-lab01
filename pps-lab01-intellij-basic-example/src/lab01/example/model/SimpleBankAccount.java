@@ -33,8 +33,10 @@ public class SimpleBankAccount implements BankAccount {
 
     @Override
     public void withdraw(final int userID, final double amount) {
-        if (checkUser(userID) && isWithdrawAllowed(amount)) {
-            this.balance -= amount;
+        if (checkUser(userID)) {
+            if (isWithdrawAllowed(amount)) {
+                this.balance -= amount;
+            }
         }
     }
 
@@ -43,6 +45,9 @@ public class SimpleBankAccount implements BankAccount {
     }
 
     private boolean checkUser(final int id) {
-        return this.holder.getId() == id;
+        if (id != this.holder.getId()) {
+            throw new IllegalArgumentException();
+        }
+        return true;
     }
 }
