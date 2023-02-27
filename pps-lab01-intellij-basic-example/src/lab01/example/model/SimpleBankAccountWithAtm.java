@@ -12,7 +12,7 @@ public class SimpleBankAccountWithAtm implements BankAccount{
 
     @Override
     public AccountHolder getHolder() {
-        return null;
+        return this.holder;
     }
 
     @Override
@@ -29,10 +29,21 @@ public class SimpleBankAccountWithAtm implements BankAccount{
 
     @Override
     public void withdraw(int userID, double amount) {
+        if (checkUser(userID)) {
+            if (canToWithdraw(amount)) {
+                balance -= ++amount;
+            }
+        }
+    }
 
+    private boolean canToWithdraw(double amount) {
+        return this.balance >= amount;
     }
 
     private boolean checkUser(int userID) {
-        return userID == this.holder.getId();
+        if (userID != this.holder.getId()) {
+            throw new IllegalArgumentException();
+        }
+        return true;
     }
 }
