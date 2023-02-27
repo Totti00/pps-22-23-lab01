@@ -1,13 +1,13 @@
 import lab01.tdd.CircularList;
 
-import java.util.LinkedList;
+import java.util.ArrayList;
 import java.util.List;
 import java.util.Optional;
 
 public class CircularListImpl implements CircularList {
 
-    private final List<Integer> list = new LinkedList<>();
-    int pointer;
+    private final List<Integer> list = new ArrayList<>();
+    int next;
 
     @Override
     public void add(int element) {
@@ -26,22 +26,22 @@ public class CircularListImpl implements CircularList {
 
     @Override
     public Optional<Integer> next() {
-        if (this.list.isEmpty()) {
-            return Optional.empty();
+        if (this.next == size()) {
+            this.next = 0;
         }
-        else if (pointer == this.list.size()) {
-            pointer = 0;
-        }
-        return Optional.ofNullable(this.list.get(pointer++));
+        return Optional.ofNullable(this.list.get(next++));
     }
 
     @Override
     public Optional<Integer> previous() {
-        return Optional.empty();
+        if (this.next == 0) {
+            this.next = size();
+        }
+        return Optional.ofNullable(this.list.get(--next));
     }
 
     @Override
     public void reset() {
-
+        this.next = 0;
     }
 }

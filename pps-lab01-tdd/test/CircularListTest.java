@@ -10,11 +10,18 @@ import static org.junit.jupiter.api.Assertions.*;
  */
 public class CircularListTest {
 
+    public static final int NUMBER_OF_ATTEMPS = 300;
     private CircularList list;
 
     @BeforeEach
     void setUp() {
         this.list = new CircularListImpl();
+    }
+
+    private void initializeList() {
+        this.list.add(0);
+        this.list.add(1);
+        this.list.add(2);
     }
 
     @Test
@@ -24,24 +31,53 @@ public class CircularListTest {
 
     @Test
     void testCanBeAddElements() {
-        this.list.add(0);
-        this.list.add(1);
-        this.list.add(2);
-        assertEquals(3, this.list.size());
+        int oldSize = this.list.size();
+        initializeList();
+        assertEquals(oldSize + 3, this.list.size());
     }
 
     @Test
-    void testCheckFirstThreeElements() {
-        assertEquals(Optional.empty(), this.list.next());
-        this.list.add(0);
-        this.list.add(1);
-        this.list.add(2);
+    void testNext() {
+        initializeList();
         assertEquals(Optional.of(0), this.list.next());
         assertEquals(Optional.of(1), this.list.next());
-        assertEquals(Optional.of(2), this.list.next());
-        assertEquals(Optional.of(0), this.list.next());
     }
 
+    @Test
+    void testCircularNext() {
+        initializeList();
+        for (int i = 0; i < NUMBER_OF_ATTEMPS; i++) {
+            this.list.next();
+        }
+        assertEquals(0, this.list.next().get());
+    }
 
+    @Test
+    void testPrevious() {
+        initializeList();
+        this.list.next();
+        this.list.next();
+        assertEquals(1, this.list.previous().get());
+    }
+
+    @Test
+    void testCircularPrevious() {
+        initializeList();
+        for (int i = 0; i < NUMBER_OF_ATTEMPS; i++) {
+            this.list.previous();
+        }
+        assertEquals(2, this.list.previous().get());
+    }
+
+    @Test
+    void testReset() {
+        initializeList();
+        this.list.next();
+        this.list.next();
+        this.list.next();
+        this.list.previous();
+        this.list.reset();
+        assertEquals(0, this.list.next().get());
+    }
 
 }
