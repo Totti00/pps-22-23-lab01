@@ -78,4 +78,13 @@ class IteratorListTest {
         }
         assertEquals(LAST_ELEMENT_OF_LIST, iterator.next());
     }
+
+    @Test
+    void testReset() {
+        initializeList();
+        iterator = this.list.forwardIterator();
+        iterator.next();
+        this.list.reset();
+        assertEquals(0, iterator.next());
+    }
 }
