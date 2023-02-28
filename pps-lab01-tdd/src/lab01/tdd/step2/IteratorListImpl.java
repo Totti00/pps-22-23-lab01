@@ -1,6 +1,7 @@
 package lab01.tdd.step2;
 
 import java.util.*;
+import java.util.stream.Stream;
 
 public class IteratorListImpl implements IteratorList {
 

@@ -11,6 +11,8 @@ import static org.junit.jupiter.api.Assertions.*;
 class IteratorListTest {
 
     public static final int NUMBER_OF_ATTEMPS = 300;
+    public static final int FIRST_ELEMENT_OF_LIST = 0;
+    public static final int LAST_ELEMENT_OF_LIST = 2;
     private IteratorList list;
     private Iterator<Integer> iterator;
 
@@ -34,7 +36,7 @@ class IteratorListTest {
     void testCanBeAddElements() {
         int oldSize = this.list.size();
         initializeList();
-        assertEquals(oldSize + 3, this.list.size());
+        assertEquals(oldSize + list.size(), this.list.size());
     }
 
     @Test
@@ -42,9 +44,9 @@ class IteratorListTest {
         iterator = this.list.forwardIterator();
         assertThrows(EmptyStackException.class, () -> iterator.next());
         initializeList();
-        assertEquals(0, iterator.next());
+        assertEquals(FIRST_ELEMENT_OF_LIST, iterator.next());
         iterator.next();
-        assertEquals(2, iterator.next());
+        assertEquals(LAST_ELEMENT_OF_LIST, iterator.next());
     }
 
     @Test
@@ -52,8 +54,28 @@ class IteratorListTest {
         iterator = this.list.backwardIterator();
         assertThrows(EmptyStackException.class, () -> iterator.next());
         initializeList();
-        assertEquals(2, iterator.next());
+        assertEquals(LAST_ELEMENT_OF_LIST, iterator.next());
         iterator.next();
-        assertEquals(0, iterator.next());
+        assertEquals(FIRST_ELEMENT_OF_LIST, iterator.next());
+    }
+
+    @Test
+    void testFarwardIteratorMultipleTimes() {
+        iterator = this.list.forwardIterator();
+        initializeList();
+        for (int i = 0; i < NUMBER_OF_ATTEMPS; i++) {
+            iterator.next();
+        }
+        assertEquals(FIRST_ELEMENT_OF_LIST, iterator.next());
+    }
+
+    @Test
+    void testBackwardIteratorMultipleTimes() {
+        iterator = this.list.backwardIterator();
+        initializeList();
+        for (int i = 0; i < NUMBER_OF_ATTEMPS; i++) {
+            iterator.next();
+        }
+        assertEquals(LAST_ELEMENT_OF_LIST, iterator.next());
     }
 }
