@@ -62,21 +62,22 @@ class IteratorListTest {
     @Test
     void testFarwardIteratorMultipleTimes() {
         iterator = this.list.forwardIterator();
-        initializeList();
-        for (int i = 0; i < NUMBER_OF_ATTEMPS; i++) {
-            iterator.next();
-        }
+        nextMultipleTimes();
         assertEquals(FIRST_ELEMENT_OF_LIST, iterator.next());
     }
 
     @Test
     void testBackwardIteratorMultipleTimes() {
         iterator = this.list.backwardIterator();
+        nextMultipleTimes();
+        assertEquals(LAST_ELEMENT_OF_LIST, iterator.next());
+    }
+
+    private void nextMultipleTimes() {
         initializeList();
         for (int i = 0; i < NUMBER_OF_ATTEMPS; i++) {
             iterator.next();
         }
-        assertEquals(LAST_ELEMENT_OF_LIST, iterator.next());
     }
 
     @Test
