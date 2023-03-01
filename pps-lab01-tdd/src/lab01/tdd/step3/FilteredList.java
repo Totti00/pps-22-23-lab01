@@ -1,27 +1,11 @@
 package lab01.tdd.step3;
 
+import lab01.tdd.ClassList;
+
 import java.util.Optional;
 import java.util.function.Predicate;
 
-public interface FilteredList {
-
-    /**
-     * Adds an element to the list, namely, after the last inserted one.
-     * @param element the element to be added to the list
-     */
-    void add(final int element);
-
-    /**
-     * Provides the current size of the list
-     * @return the size of the list
-     */
-    int size();
-
-    /**
-     * Checks if the list is empty
-     * @return true if the list is empty, false otherwise
-     */
-    boolean isEmpty();
+public interface FilteredList extends ClassList {
 
     /**
      * It's finds and returns the next element that satisfies a given condition.

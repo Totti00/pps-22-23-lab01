@@ -1,29 +1,13 @@
 package lab01.tdd.step3;
 
-import java.util.ArrayList;
-import java.util.List;
-import java.util.Optional;
+import lab01.tdd.ClassListImpl;
+
+import java.util.*;
 import java.util.function.Predicate;
 
-public class FilteredListImpl implements FilteredList {
+public class FilteredListImpl extends ClassListImpl implements FilteredList {
 
-    private final List<Integer> list = new ArrayList<>();
-    int next;
-
-    @Override
-    public void add(int element) {
-        this.list.add(element);
-    }
-
-    @Override
-    public int size() {
-        return this.list.size();
-    }
-
-    @Override
-    public boolean isEmpty() {
-        return size() == 0;
-    }
+    private final List<Integer> list = super.list;
 
     @Override
     public Optional<Integer> filteredNext(Predicate<Integer> condition) {

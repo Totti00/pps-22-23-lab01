@@ -1,39 +1,25 @@
 package lab01.tdd.step2;
 
+import lab01.tdd.ClassListImpl;
+
 import java.util.*;
-import java.util.stream.Stream;
 
-public class IteratorListImpl implements IteratorList {
+public class IteratorListImpl extends ClassListImpl implements IteratorList {
 
-    private final List<Integer> list = new ArrayList<>();
+    private List<Integer> list = super.list;
     int next;
-
-    @Override
-    public void add(int element) {
-        this.list.add(element);
-    }
-
-    @Override
-    public int size() {
-        return this.list.size();
-    }
-
-    @Override
-    public boolean isEmpty() {
-        return this.list.size() == 0;
-    }
 
     @Override
     public Iterator<Integer> forwardIterator() {
         return new Iterator<Integer>() {
             @Override
             public boolean hasNext() {
-                return !list.isEmpty();
+                return !isEmpty();
             }
 
             @Override
             public Integer next() {
-                if (list.isEmpty()) {
+                if (isEmpty()) {
                     throw new EmptyStackException();
                 } else if (size() == next) {
                     next = 0;
@@ -48,12 +34,12 @@ public class IteratorListImpl implements IteratorList {
         return new Iterator<Integer>() {
             @Override
             public boolean hasNext() {
-                return !list.isEmpty();
+                return !isEmpty();
             }
 
             @Override
             public Integer next() {
-                if (list.isEmpty()) {
+                if (isEmpty()) {
                     throw new EmptyStackException();
                 } else if (next == 0) {
                     next = size();

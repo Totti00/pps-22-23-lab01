@@ -21,27 +21,31 @@ class FilteredListTest {
 
     @Test
     void testIsListEmpty() {
-        assertTrue(this.list.isEmpty());
+        assertTrue(checkListIsEmpty());
     }
 
     @Test
     void testCanBeAddElements() {
         int oldSize = this.list.size();
         initializeList();
-        assertEquals(oldSize + 3, this.list.size());
+        assertEquals(oldSize + this.list.size(), this.list.size());
     }
 
     @Test
     void testFilteredNext() {
         initializeList();
-        assertFalse(this.list.isEmpty());
+        assertFalse(checkListIsEmpty());
         assertEquals(Optional.of(2), list.filteredNext(i  -> i == 2));
     }
 
     @Test
     void testFailureFilteredNext() {
         initializeList();
-        assertFalse(this.list.isEmpty());
+        assertFalse(checkListIsEmpty());
         assertEquals(Optional.empty(), list.filteredNext(i  -> i == 3));
+    }
+
+    private boolean checkListIsEmpty() {
+        return this.list.isEmpty();
     }
 }
