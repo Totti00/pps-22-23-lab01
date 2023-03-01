@@ -30,10 +30,4 @@ public interface FilteredList {
      * @return next element or empty Optional
      */
     Optional<Integer> filteredNext(Predicate<Integer> condition);
-
-    /**
-     * Reset the position of current element back to the first one of the list.
-     * Note the first one is the first added to the list.
-     */
-    void reset();
 }
